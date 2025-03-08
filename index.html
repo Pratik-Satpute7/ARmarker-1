@@ -3,23 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Marker</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar-js@1.2.2/mindar-image.prod.js"></script>
+    <title>AR Heart Model</title>
+
+    <!-- MindAR for Marker-Based Tracking -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.0/dist/mindar-image.prod.js"></script>
+
+    <!-- A-Frame (for 3D Rendering) -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+
+    <!-- MindAR Component for A-Frame -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.0/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        body { margin: 0; overflow: hidden; }
+    </style>
 </head>
 <body>
-    <a-scene mindar-image="imageTargetSrc: targets.mind; autoStart: true; ui: false;" 
-             embedded 
-             vr-mode-ui="enabled: false" 
-             device-orientation-permission-ui="enabled: false">
-             
+
+    <a-scene mindar-image embedded color-space="sRGB" 
+        mindar-image="imageTargetSrc: targets.mind; autoStart: true;" 
+        vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+
+        <!-- AR Camera -->
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        
+
+        <!-- Image Marker -->
         <a-entity mindar-image-target="targetIndex: 0">
-            <!-- Load 3D Model -->
-            <a-gltf-model src="heart.glb" position="0 0 0" scale="0.5 0.5 0.5"></a-gltf-model>
+            <a-gltf-model src="heart.glb" scale="0.5 0.5 0.5" position="0 0 0" rotation="0 180 0"></a-gltf-model>
         </a-entity>
 
     </a-scene>
+
+    <script>
+        window.onload = () => {
+            const scene = document.querySelector("a-scene");
+            scene.addEventListener("loaded", () => {
+                scene.components["mindar-image"].start();
+            });
+        };
+    </script>
+
 </body>
 </html>
